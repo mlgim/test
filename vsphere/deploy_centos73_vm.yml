@@ -37,16 +37,6 @@
         state: poweredon
         wait_for_ip_address: True
       register: newvm
-#    - name: Getting some Facts
-#      vsphere_guest:
-#        vcenter_hostname: vc01.ibmps.lan
-#        username: Administrator
-#        password: St0rage#
-#            datacenter: Arrow Viby
-#        guest: "{{ vmname }}"
-#        vmware_guest_facts: true
-#        validate_certs: no
-#      register: newvm
 
     - debug: 
 #        #var: vmname

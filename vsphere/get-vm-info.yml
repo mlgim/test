@@ -6,11 +6,14 @@
 # hosts:   
   hosts: localhost
   vars:
-    #vmname: mlgim-w16-mssql01
-    vmname: mlgim-w16-mssql01
   vars_prompt:
-#    - name: "vmname"
-#      prompt: "Enter VM name"
+    - name: "vcpw"
+      prompt: "Enter vCenter PW"
+      private: no
+    - name: "vmname"
+      prompt: "Enter VM name"
+      private: no
+
 
 # -----------------------------------------------------------------------
 # --- Tasks -------------------------------------------------------------
@@ -20,7 +23,7 @@
     vsphere_guest:
           vcenter_hostname: vc01.ibmps.lan
           username: Administrator
-          password: St0rage#
+          password: {{ vcpw }}
 #            datacenter: Arrow Viby
           guest: "{{ vmname }}"
           vmware_guest_facts: true
@@ -36,7 +39,7 @@
 #            validate_certs: false
 #            hostname: vc01.ibmps.lan
 #            username: Administrator
-#            password: St0rage#
+#            password: {{ vcpw }}
 #            datacenter: Arrow Viby
 #            name: '{{ vmname }}'
             #folder: /vm
