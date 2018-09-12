@@ -1,0 +1,58 @@
+---
+# -----------------------------------------------------------------------
+# --- Play --------------------------------------------------------------
+# -----------------------------------------------------------------------
+- name: Play - Deploy Windows 2016 server from template and update it
+# hosts:   
+  hosts: localhost
+  vars_prompt:
+    - name: "vcpw"
+      prompt: "Enter vCenter password"
+      private: yes
+    - name: "vmname"
+      prompt: "Enter VM name"
+      private: no
+
+# -----------------------------------------------------------------------
+# --- Tasks -------------------------------------------------------------
+# -----------------------------------------------------------------------
+  tasks:
+    - name: Create CentOS 7.3 VM
+      vmware_guest:
+        hostname: vc01.ibmps.lan
+        username: Administrator
+        password: '{{ vcpw }}'
+        name: '{{ vmname }}'
+        validate_certs: no
+        template: CentOS73-Template
+        # Must set 'custimization' variable to activate codeblock in which the custimization_spec is handled. BUG
+        datacenter: Arrow Viby
+        cluster: IBM Demo
+#       customvalues:
+#         vcpu.hotadd: yes
+#         mem.hotadd:  yes  
+        annotation: Ansible Deployed
+        folder: MLGIM
+        guest_id: centos64Guest
+        state: poweredon
+        wait_for_ip_address: True
+      register: newvm
+#    - name: Getting some Facts
+#      vsphere_guest:
+#        vcenter_hostname: vc01.ibmps.lan
+#        username: Administrator
+#        password: St0rage#
+#            datacenter: Arrow Viby
+#        guest: "{{ vmname }}"
+#        vmware_guest_facts: true
+#        validate_certs: no
+#      register: newvm
+
+    - debug: 
+#        #var: vmname
+        #msg: "{{ vmname }}"
+        #msg: "{{ newvm }} {{ vmname }}"
+        msg: "{{ newvm.instance.ipv4 }} {{ vmname }}"
+
+#    - name: debug facts
+#        debug: msg="vmguest facts are {{ deploy_vm }}"
